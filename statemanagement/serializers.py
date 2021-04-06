@@ -9,3 +9,10 @@ class StateContainerSerializer(serializers.ModelSerializer):
         model = StateContainer
         read_only_fields = ('id', 'created', 'modified')
         fields = read_only_fields + ('state',)
+
+
+class StateChangeSerializer(serializers.Serializer):
+    wait_until_complete = serializers.BooleanField()
+    bypass_state_validation = serializers.BooleanField()
+    new_state = serializers.CharField()
+    id = serializers.CharField()
