@@ -7,4 +7,22 @@ services:
             - ./:/usr/src/app
         ports:
             - "8000:8000"
-    # TODO celery, ?postgresql
+        depends_on:
+            - message-broker
+        restart: on-failure
+
+    celery-worker:
+        build: .
+        command: celery -A takehomegai worker -l info
+        volumes:
+            - ./:/usr/src/app
+        depends_on:
+            - message-broker
+        restart: on-failure
+    
+    message-broker:
+        image: rabbitmq:latest
+        ports:
+            - "5672:5672"
+        restart: on-failure
+    # TODO postgresql
